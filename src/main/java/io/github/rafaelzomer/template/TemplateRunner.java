@@ -56,14 +56,21 @@ public class TemplateRunner {
       return template("menu");
     }
 
+    private String filename(String filename) {
+      if(filename.contains(".")) {
+        return filename;
+      }
+      return filename + ".html";
+    }
+
     public TemplateBuilder template(String path) throws IOException {
-      String fileContent = getFile("./src/main/resources/template/" + path + ".html");
+      String fileContent = getFile("./src/main/resources/template/" + filename(path));
       content.add(fileContent);
       return this;
     }
 
     public TemplateBuilder file(String path) throws IOException {
-      String fileContent = getFile("./src/main/resources/view/" + path + ".html");
+      String fileContent = getFile("./src/main/resources/view/" + filename(path));
       content.add(fileContent);
       return this;
     }
@@ -96,6 +103,7 @@ public class TemplateRunner {
         base = base.replace("{" + entry.getKey()  + "}", entry.getValue() != null ? entry.getValue() : "");
       }
       base = base.replace(CONTENT, "");
+      base = base.replace(TITLE, "");
       return base;
     }
 
