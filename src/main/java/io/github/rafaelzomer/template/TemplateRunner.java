@@ -7,7 +7,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TemplateRunner {
   private static String BASE_PATH = "./src/main/resources/template/";
@@ -42,7 +44,7 @@ public class TemplateRunner {
     private final PrintWriter out;
     private String base;
     private List<String> content = new ArrayList<>();
-    private String title;
+    private Map<String, String> variables = new HashMap<>();
 
     TemplateBuilder(String base, HttpServletResponse response) throws IOException {
       this.base = base;
@@ -65,6 +67,10 @@ public class TemplateRunner {
       content.add(fileContent);
       return this;
     }
+    public TemplateBuilder variable(String key, String value) {
+      variables.put(key, value);
+      return this;
+    }
 
     public TemplateBuilder component(TemplateBuilder templateBuilder) {
       content.add(templateBuilder.build());
@@ -84,6 +90,10 @@ public class TemplateRunner {
     public String build() {
       for (String value : content) {
         base = base.replace(CONTENT, value + CONTENT);
+      }
+      for (Map.Entry<String, String> entry : variables.entrySet())
+      {
+        base = base.replace("{" + entry.getKey()  + "}", entry.getValue() != null ? entry.getValue() : "");
       }
       base = base.replace(CONTENT, "");
       return base;
