@@ -1,12 +1,46 @@
 package io.github.rafaelzomer.request;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 public abstract class AbstractServlet extends HttpServlet {
+
+  private <T> T getValue(Object value, Class<T> tClass) {
+    if (tClass == Integer.class) {
+      return (T) Integer.valueOf(value.toString());
+    }
+    return tClass.cast(value);
+  }
+
+  protected <T> T getParameter(HttpServletRequest request, String name, Class<T> tClass) {
+    try {
+      return getValue(request.getParameter(name), tClass);
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  protected <T> T getCookie(HttpServletRequest request, String name, Class<T> tClass) {
+    Cookie cookie = getCookie(request, name);
+    if (Objects.nonNull(cookie)) {
+      return getValue(cookie.getValue(), tClass);
+    }
+    return null;
+  }
+
+  protected Cookie getCookie(HttpServletRequest request, String name) {
+    for (Cookie cookie : request.getCookies()) {
+      if (name.equals(cookie.getName())) {
+        return cookie;
+      }
+    }
+    return null;
+  }
 
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
