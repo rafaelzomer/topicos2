@@ -8,6 +8,9 @@
             <a href="/exercicio-adivinhar" class="list-group-item list-group-item-action">
                 Adivinhação
             </a>
+            <a href="/exercicio-aniversario" class="list-group-item list-group-item-action">
+                Seu aniversário
+            </a>
             <a href="/exercicio-imc" class="list-group-item list-group-item-action">
                 IMC - Boa Forma
             </a>
