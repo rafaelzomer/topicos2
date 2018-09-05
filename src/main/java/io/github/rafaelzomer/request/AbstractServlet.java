@@ -11,8 +11,14 @@ import java.util.Objects;
 public abstract class AbstractServlet extends HttpServlet {
 
   private <T> T getValue(Object value, Class<T> tClass) {
+    if (value == null) {
+      return null;
+    }
     if (tClass == Integer.class) {
       return (T) Integer.valueOf(value.toString());
+    }
+    if (tClass == Double.class) {
+      return (T) Double.valueOf(value.toString());
     }
     return tClass.cast(value);
   }
