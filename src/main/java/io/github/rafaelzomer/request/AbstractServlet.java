@@ -1,17 +1,24 @@
 package io.github.rafaelzomer.request;
 
+import com.sun.deploy.net.HttpRequest;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractServlet extends HttpServlet {
 
   private <T> T getValue(Object value, Class<T> tClass) {
     if (value == null) {
+      if (tClass == List.class) {
+        return tClass.cast(new ArrayList<>());
+      }
       return null;
     }
     if (tClass == Integer.class) {
@@ -20,12 +27,27 @@ public abstract class AbstractServlet extends HttpServlet {
     if (tClass == Double.class) {
       return (T) Double.valueOf(value.toString());
     }
+    if (tClass == List.class) {
+      return tClass.cast(value);
+    }
     return tClass.cast(value);
+  }
+
+  protected boolean constainsPath(HttpServletRequest request, String path) {
+    return request != null && request.getServletPath().contains(path);
   }
 
   protected <T> T getParameter(HttpServletRequest request, String name, Class<T> tClass) {
     try {
       return getValue(request.getParameter(name), tClass);
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  protected <T> T getSession(HttpServletRequest request, String name, Class<T> tClass) {
+    try {
+      return getValue(request.getSession().getAttribute(name), tClass);
     } catch (Exception e) {
       return null;
     }

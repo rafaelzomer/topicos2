@@ -14,6 +14,9 @@
             <a href="/exercicio-imc" class="list-group-item list-group-item-action">
                 IMC - Boa Forma
             </a>
+            <a href="/exercicio-produtos/listar" class="list-group-item list-group-item-action">
+                Produtos
+            </a>
         </div>
     </tags:container>
 </tags:base>
