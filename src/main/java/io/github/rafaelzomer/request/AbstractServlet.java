@@ -45,6 +45,14 @@ public abstract class AbstractServlet extends HttpServlet {
     }
   }
 
+  protected <T> List<T> getSessionList(HttpServletRequest request, String name, Class<T> tClass) {
+    try {
+      return getValue(request.getSession().getAttribute(name), List.class);
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
   protected <T> T getSession(HttpServletRequest request, String name, Class<T> tClass) {
     try {
       return getValue(request.getSession().getAttribute(name), tClass);

@@ -34,7 +34,7 @@ public class ExercicioProdutosServlet extends AbstractServlet {
   public void post(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     if (constainsPath(request, URL_PRODUTO)) {
       Integer codigo = getParameter(request, "codigo", Integer.class);
-      List<Produto> produtos = getSession(request, "produtos", List.class);
+      List<Produto> produtos = getSessionList(request, "produtos", Produto.class);
       Produto p = null;
       if(codigo == null) {
         codigo = produtos.size() + 1;
@@ -63,7 +63,7 @@ public class ExercicioProdutosServlet extends AbstractServlet {
   @Override
   public void get(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     if (constainsPath(request, URL_PRODUTO)) {
-      List<Produto> produtos = getSession(request, "produtos", List.class);
+      List<Produto> produtos = getSessionList(request, "produtos", Produto.class);
       Integer codigo = getParameter(request, "codigo", Integer.class);
       if (codigo != null) {
         Produto produto = produtos.stream().filter(t -> t.getCodigo().equals(codigo)).findFirst().orElse(null);
