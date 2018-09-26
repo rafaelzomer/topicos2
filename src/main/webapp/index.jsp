@@ -17,6 +17,9 @@
             <a href="/exercicio-produtos/listar" class="list-group-item list-group-item-action">
                 Produtos
             </a>
+            <a href="/exercicio-atividades/listar" class="list-group-item list-group-item-action">
+                Atividades
+            </a>
         </div>
     </tags:container>
 </tags:base>
